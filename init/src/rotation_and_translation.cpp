@@ -22,7 +22,7 @@ const char* fragmentShaderSource = R"(
     out vec4 FragColor;
     void main()
     {
-        FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
     }
 )";
 
@@ -110,25 +110,20 @@ int main()
     {
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
         glUseProgram(shaderProgram);
 
         // Calculate transformation matrix for translation and rotation
         static float translationX = -0.5f;  // Initial X position
         translationX += 0.001f;             // Move right by 0.001 units per frame
-
         static float rotationAngle = 0.0f;   // Initial rotation angle
         rotationAngle += 0.01f;              // Rotate by 0.01 radians per frame
-
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(translationX, 0.0f, 0.0f));
         model = glm::rotate(model, rotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -137,9 +132,7 @@ int main()
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
-
     glfwDestroyWindow(window);
     glfwTerminate();
-
     return 0;
 }
