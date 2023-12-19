@@ -22,7 +22,7 @@ const char* fragmentShaderSource = R"(
     out vec4 FragColor;
     void main()
     {
-        FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
     }
 )";
 
@@ -56,7 +56,7 @@ int main()
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 800, 800);
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
@@ -110,13 +110,11 @@ int main()
     {
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
         glUseProgram(shaderProgram);
 
         // Calculate transformation matrix for scaling
         static float scaleFactor = 1.0f;     // Initial scaling factor
         static bool scaleUp = true;           // Scaling direction
-
         if (scaleUp)
         {
             scaleFactor += 0.001f;  // Scale up by 0.001 units per frame
@@ -129,15 +127,12 @@ int main()
             if (scaleFactor <= 1.0f)  // Set a limit for scaling down
                 scaleUp = true;
         }
-
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(scaleFactor, scaleFactor, 1.0f));  // Uniform scaling
-
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
